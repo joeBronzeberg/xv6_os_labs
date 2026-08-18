@@ -1,0 +1,31 @@
+1.
+1 processor
+10 cores
+12 logical cpu's
+4 p-cores (4x2) and 6 e-cores(4x1 + 2x1x0- reserved)
+15.3 (16) GB RAM
+cat /proc/stat | grep -E 'processes|ctxt'
+
+3.
+(a)
+tty
+ps -f -C procees_name
+ps -f -p process_pid
+ps -f -t pts/0 -t pts/1
+(c)
+ls -l /proc/22275/fd/
+
+(e)
+Built-in commands (implemented in Bash itself):
+
+cd (Change Directory)
+history (Command History)
+
+External executables (located in system directories):
+
+ls (List Directory Contents)
+ps (Process Status)
+
+4.
+ps -o pid,vsz,rss -p <pid>
+

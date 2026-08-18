@@ -1,0 +1,129 @@
+gcc -Werror -Wall -o mkfs mkfs.c
+i386-elf-gcc -fno-pic -static -fno-builtin -fno-strict-aliasing -O2 -Wall -MD -ggdb -m32 -Werror -fno-omit-frame-pointer -fno-stack-protector -fno-pie -no-pie   -c -o ulib.o ulib.c
+i386-elf-gcc -m32 -gdwarf-2 -Wa,-divide   -c -o usys.o usys.S
+i386-elf-gcc -fno-pic -static -fno-builtin -fno-strict-aliasing -O2 -Wall -MD -ggdb -m32 -Werror -fno-omit-frame-pointer -fno-stack-protector -fno-pie -no-pie   -c -o printf.o printf.c
+i386-elf-gcc -fno-pic -static -fno-builtin -fno-strict-aliasing -O2 -Wall -MD -ggdb -m32 -Werror -fno-omit-frame-pointer -fno-stack-protector -fno-pie -no-pie   -c -o umalloc.o umalloc.c
+i386-elf-gcc -fno-pic -static -fno-builtin -fno-strict-aliasing -O2 -Wall -MD -ggdb -m32 -Werror -fno-omit-frame-pointer -fno-stack-protector -fno-pie -no-pie   -c -o cat.o cat.c
+i386-elf-ld -L/opt/homebrew/opt/openssl@3/lib -L/opt/homebrew/opt/openssl@3/lib  -m    elf_i386 -N -e main -Ttext 0 -o _cat cat.o ulib.o usys.o printf.o umalloc.o
+i386-elf-objdump -S _cat > cat.asm
+i386-elf-objdump: DWARF error: can't find .debug_ranges section.
+i386-elf-objdump -t _cat | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$/d' > cat.sym
+i386-elf-gcc -fno-pic -static -fno-builtin -fno-strict-aliasing -O2 -Wall -MD -ggdb -m32 -Werror -fno-omit-frame-pointer -fno-stack-protector -fno-pie -no-pie   -c -o echo.o echo.c
+i386-elf-ld -L/opt/homebrew/opt/openssl@3/lib -L/opt/homebrew/opt/openssl@3/lib  -m    elf_i386 -N -e main -Ttext 0 -o _echo echo.o ulib.o usys.o printf.o umalloc.o
+i386-elf-objdump -S _echo > echo.asm
+i386-elf-objdump: DWARF error: can't find .debug_ranges section.
+i386-elf-objdump -t _echo | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$/d' > echo.sym
+i386-elf-gcc -fno-pic -static -fno-builtin -fno-strict-aliasing -O2 -Wall -MD -ggdb -m32 -Werror -fno-omit-frame-pointer -fno-stack-protector -fno-pie -no-pie   -c -o forktest.o forktest.c
+# forktest has less library code linked in - needs to be small
+# in order to be able to max out the proc table.
+i386-elf-ld -L/opt/homebrew/opt/openssl@3/lib -L/opt/homebrew/opt/openssl@3/lib  -m    elf_i386 -N -e main -Ttext 0 -o _forktest forktest.o ulib.o usys.o
+i386-elf-objdump -S _forktest > forktest.asm
+i386-elf-objdump: DWARF error: can't find .debug_ranges section.
+i386-elf-gcc -fno-pic -static -fno-builtin -fno-strict-aliasing -O2 -Wall -MD -ggdb -m32 -Werror -fno-omit-frame-pointer -fno-stack-protector -fno-pie -no-pie   -c -o grep.o grep.c
+i386-elf-ld -L/opt/homebrew/opt/openssl@3/lib -L/opt/homebrew/opt/openssl@3/lib  -m    elf_i386 -N -e main -Ttext 0 -o _grep grep.o ulib.o usys.o printf.o umalloc.o
+i386-elf-objdump -S _grep > grep.asm
+i386-elf-objdump: DWARF error: can't find .debug_ranges section.
+i386-elf-objdump -t _grep | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$/d' > grep.sym
+i386-elf-gcc -fno-pic -static -fno-builtin -fno-strict-aliasing -O2 -Wall -MD -ggdb -m32 -Werror -fno-omit-frame-pointer -fno-stack-protector -fno-pie -no-pie   -c -o init.o init.c
+i386-elf-ld -L/opt/homebrew/opt/openssl@3/lib -L/opt/homebrew/opt/openssl@3/lib  -m    elf_i386 -N -e main -Ttext 0 -o _init init.o ulib.o usys.o printf.o umalloc.o
+i386-elf-objdump -S _init > init.asm
+i386-elf-objdump: DWARF error: can't find .debug_ranges section.
+i386-elf-objdump -t _init | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$/d' > init.sym
+i386-elf-gcc -fno-pic -static -fno-builtin -fno-strict-aliasing -O2 -Wall -MD -ggdb -m32 -Werror -fno-omit-frame-pointer -fno-stack-protector -fno-pie -no-pie   -c -o kill.o kill.c
+i386-elf-ld -L/opt/homebrew/opt/openssl@3/lib -L/opt/homebrew/opt/openssl@3/lib  -m    elf_i386 -N -e main -Ttext 0 -o _kill kill.o ulib.o usys.o printf.o umalloc.o
+i386-elf-objdump -S _kill > kill.asm
+i386-elf-objdump: DWARF error: can't find .debug_ranges section.
+i386-elf-objdump -t _kill | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$/d' > kill.sym
+i386-elf-gcc -fno-pic -static -fno-builtin -fno-strict-aliasing -O2 -Wall -MD -ggdb -m32 -Werror -fno-omit-frame-pointer -fno-stack-protector -fno-pie -no-pie   -c -o ln.o ln.c
+i386-elf-ld -L/opt/homebrew/opt/openssl@3/lib -L/opt/homebrew/opt/openssl@3/lib  -m    elf_i386 -N -e main -Ttext 0 -o _ln ln.o ulib.o usys.o printf.o umalloc.o
+i386-elf-objdump -S _ln > ln.asm
+i386-elf-objdump: DWARF error: can't find .debug_ranges section.
+i386-elf-objdump -t _ln | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$/d' > ln.sym
+i386-elf-gcc -fno-pic -static -fno-builtin -fno-strict-aliasing -O2 -Wall -MD -ggdb -m32 -Werror -fno-omit-frame-pointer -fno-stack-protector -fno-pie -no-pie   -c -o ls.o ls.c
+i386-elf-ld -L/opt/homebrew/opt/openssl@3/lib -L/opt/homebrew/opt/openssl@3/lib  -m    elf_i386 -N -e main -Ttext 0 -o _ls ls.o ulib.o usys.o printf.o umalloc.o
+i386-elf-objdump -S _ls > ls.asm
+i386-elf-objdump: DWARF error: can't find .debug_ranges section.
+i386-elf-objdump -t _ls | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$/d' > ls.sym
+i386-elf-gcc -fno-pic -static -fno-builtin -fno-strict-aliasing -O2 -Wall -MD -ggdb -m32 -Werror -fno-omit-frame-pointer -fno-stack-protector -fno-pie -no-pie   -c -o mkdir.o mkdir.c
+i386-elf-ld -L/opt/homebrew/opt/openssl@3/lib -L/opt/homebrew/opt/openssl@3/lib  -m    elf_i386 -N -e main -Ttext 0 -o _mkdir mkdir.o ulib.o usys.o printf.o umalloc.o
+i386-elf-objdump -S _mkdir > mkdir.asm
+i386-elf-objdump: DWARF error: can't find .debug_ranges section.
+i386-elf-objdump -t _mkdir | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$/d' > mkdir.sym
+i386-elf-gcc -fno-pic -static -fno-builtin -fno-strict-aliasing -O2 -Wall -MD -ggdb -m32 -Werror -fno-omit-frame-pointer -fno-stack-protector -fno-pie -no-pie   -c -o rm.o rm.c
+i386-elf-ld -L/opt/homebrew/opt/openssl@3/lib -L/opt/homebrew/opt/openssl@3/lib  -m    elf_i386 -N -e main -Ttext 0 -o _rm rm.o ulib.o usys.o printf.o umalloc.o
+i386-elf-objdump -S _rm > rm.asm
+i386-elf-objdump: DWARF error: can't find .debug_ranges section.
+i386-elf-objdump -t _rm | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$/d' > rm.sym
+i386-elf-gcc -fno-pic -static -fno-builtin -fno-strict-aliasing -O2 -Wall -MD -ggdb -m32 -Werror -fno-omit-frame-pointer -fno-stack-protector -fno-pie -no-pie   -c -o sh.o sh.c
+i386-elf-ld -L/opt/homebrew/opt/openssl@3/lib -L/opt/homebrew/opt/openssl@3/lib  -m    elf_i386 -N -e main -Ttext 0 -o _sh sh.o ulib.o usys.o printf.o umalloc.o
+i386-elf-objdump -S _sh > sh.asm
+i386-elf-objdump: DWARF error: can't find .debug_ranges section.
+i386-elf-objdump -t _sh | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$/d' > sh.sym
+i386-elf-gcc -fno-pic -static -fno-builtin -fno-strict-aliasing -O2 -Wall -MD -ggdb -m32 -Werror -fno-omit-frame-pointer -fno-stack-protector -fno-pie -no-pie   -c -o stressfs.o stressfs.c
+i386-elf-ld -L/opt/homebrew/opt/openssl@3/lib -L/opt/homebrew/opt/openssl@3/lib  -m    elf_i386 -N -e main -Ttext 0 -o _stressfs stressfs.o ulib.o usys.o printf.o umalloc.o
+i386-elf-objdump -S _stressfs > stressfs.asm
+i386-elf-objdump: DWARF error: can't find .debug_ranges section.
+i386-elf-objdump -t _stressfs | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$/d' > stressfs.sym
+i386-elf-gcc -fno-pic -static -fno-builtin -fno-strict-aliasing -O2 -Wall -MD -ggdb -m32 -Werror -fno-omit-frame-pointer -fno-stack-protector -fno-pie -no-pie   -c -o usertests.o usertests.c
+i386-elf-ld -L/opt/homebrew/opt/openssl@3/lib -L/opt/homebrew/opt/openssl@3/lib  -m    elf_i386 -N -e main -Ttext 0 -o _usertests usertests.o ulib.o usys.o printf.o umalloc.o
+i386-elf-objdump -S _usertests > usertests.asm
+i386-elf-objdump: DWARF error: can't find .debug_ranges section.
+i386-elf-objdump -t _usertests | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$/d' > usertests.sym
+i386-elf-gcc -fno-pic -static -fno-builtin -fno-strict-aliasing -O2 -Wall -MD -ggdb -m32 -Werror -fno-omit-frame-pointer -fno-stack-protector -fno-pie -no-pie   -c -o wc.o wc.c
+i386-elf-ld -L/opt/homebrew/opt/openssl@3/lib -L/opt/homebrew/opt/openssl@3/lib  -m    elf_i386 -N -e main -Ttext 0 -o _wc wc.o ulib.o usys.o printf.o umalloc.o
+i386-elf-objdump -S _wc > wc.asm
+i386-elf-objdump: DWARF error: can't find .debug_ranges section.
+i386-elf-objdump -t _wc | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$/d' > wc.sym
+i386-elf-gcc -fno-pic -static -fno-builtin -fno-strict-aliasing -O2 -Wall -MD -ggdb -m32 -Werror -fno-omit-frame-pointer -fno-stack-protector -fno-pie -no-pie   -c -o zombie.o zombie.c
+i386-elf-ld -L/opt/homebrew/opt/openssl@3/lib -L/opt/homebrew/opt/openssl@3/lib  -m    elf_i386 -N -e main -Ttext 0 -o _zombie zombie.o ulib.o usys.o printf.o umalloc.o
+i386-elf-objdump -S _zombie > zombie.asm
+i386-elf-objdump: DWARF error: can't find .debug_ranges section.
+i386-elf-objdump -t _zombie | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$/d' > zombie.sym
+i386-elf-gcc -fno-pic -static -fno-builtin -fno-strict-aliasing -O2 -Wall -MD -ggdb -m32 -Werror -fno-omit-frame-pointer -fno-stack-protector -fno-pie -no-pie   -c -o test_valid.o test_valid.c
+i386-elf-ld -L/opt/homebrew/opt/openssl@3/lib -L/opt/homebrew/opt/openssl@3/lib  -m    elf_i386 -N -e main -Ttext 0 -o _test_valid test_valid.o ulib.o usys.o printf.o umalloc.o
+i386-elf-objdump -S _test_valid > test_valid.asm
+i386-elf-objdump: DWARF error: can't find .debug_ranges section.
+i386-elf-objdump -t _test_valid | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$/d' > test_valid.sym
+i386-elf-gcc -fno-pic -static -fno-builtin -fno-strict-aliasing -O2 -Wall -MD -ggdb -m32 -Werror -fno-omit-frame-pointer -fno-stack-protector -fno-pie -no-pie   -c -o test_state.o test_state.c
+i386-elf-ld -L/opt/homebrew/opt/openssl@3/lib -L/opt/homebrew/opt/openssl@3/lib  -m    elf_i386 -N -e main -Ttext 0 -o _test_state test_state.o ulib.o usys.o printf.o umalloc.o
+i386-elf-objdump -S _test_state > test_state.asm
+i386-elf-objdump: DWARF error: can't find .debug_ranges section.
+i386-elf-objdump -t _test_state | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$/d' > test_state.sym
+i386-elf-gcc -fno-pic -static -fno-builtin -fno-strict-aliasing -O2 -Wall -MD -ggdb -m32 -Werror -fno-omit-frame-pointer -fno-stack-protector -fno-pie -no-pie   -c -o test_proc_name.o test_proc_name.c
+i386-elf-ld -L/opt/homebrew/opt/openssl@3/lib -L/opt/homebrew/opt/openssl@3/lib  -m    elf_i386 -N -e main -Ttext 0 -o _test_proc_name test_proc_name.o ulib.o usys.o printf.o umalloc.o
+i386-elf-objdump -S _test_proc_name > test_proc_name.asm
+i386-elf-objdump: DWARF error: can't find .debug_ranges section.
+i386-elf-objdump -t _test_proc_name | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$/d' > test_proc_name.sym
+i386-elf-gcc -fno-pic -static -fno-builtin -fno-strict-aliasing -O2 -Wall -MD -ggdb -m32 -Werror -fno-omit-frame-pointer -fno-stack-protector -fno-pie -no-pie   -c -o test_num_s.o test_num_s.c
+i386-elf-ld -L/opt/homebrew/opt/openssl@3/lib -L/opt/homebrew/opt/openssl@3/lib  -m    elf_i386 -N -e main -Ttext 0 -o _test_num_s test_num_s.o ulib.o usys.o printf.o umalloc.o
+i386-elf-objdump -S _test_num_s > test_num_s.asm
+i386-elf-objdump: DWARF error: can't find .debug_ranges section.
+i386-elf-objdump -t _test_num_s | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$/d' > test_num_s.sym
+i386-elf-gcc -fno-pic -static -fno-builtin -fno-strict-aliasing -O2 -Wall -MD -ggdb -m32 -Werror -fno-omit-frame-pointer -fno-stack-protector -fno-pie -no-pie   -c -o test_num_t.o test_num_t.c
+i386-elf-ld -L/opt/homebrew/opt/openssl@3/lib -L/opt/homebrew/opt/openssl@3/lib  -m    elf_i386 -N -e main -Ttext 0 -o _test_num_t test_num_t.o ulib.o usys.o printf.o umalloc.o
+i386-elf-objdump -S _test_num_t > test_num_t.asm
+i386-elf-objdump: DWARF error: can't find .debug_ranges section.
+i386-elf-objdump -t _test_num_t | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$/d' > test_num_t.sym
+i386-elf-gcc -fno-pic -static -fno-builtin -fno-strict-aliasing -O2 -Wall -MD -ggdb -m32 -Werror -fno-omit-frame-pointer -fno-stack-protector -fno-pie -no-pie   -c -o ps.o ps.c
+i386-elf-ld -L/opt/homebrew/opt/openssl@3/lib -L/opt/homebrew/opt/openssl@3/lib  -m    elf_i386 -N -e main -Ttext 0 -o _ps ps.o ulib.o usys.o printf.o umalloc.o
+i386-elf-objdump -S _ps > ps.asm
+i386-elf-objdump: DWARF error: can't find .debug_ranges section.
+i386-elf-objdump -t _ps | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$/d' > ps.sym
+./mkfs fs.img README _cat _echo _forktest _grep _init _kill _ln _ls _mkdir _rm _sh _stressfs _usertests _wc _zombie _test_valid _test_state _test_proc_name _test_num_s _test_num_t _ps 
+nmeta 59 (boot, super, log blocks 30 inode blocks 26, bitmap blocks 1) blocks 941 total 1000
+balloc: first 854 blocks have been allocated
+balloc: write bitmap block at sector 58
+qemu-system-i386 -nographic -drive file=fs.img,index=1,media=disk,format=raw -drive file=xv6.img,index=0,media=disk,format=raw -smp 2 -m 512 
+c[?7l[2J[0mSeaBIOS (version rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org)
+
+
+iPXE (http://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+1EFD0FC0+1EF30FC0 CA00
+Press Ctrl-B to configure iPXE (PCI 00:03.0)...                                                                               
+
+
+Booting from Hard Disk..xv6...
+cpu0: starting 0
+sb: size 1000 nblocks 941 ninodes 200 nlog 30 logstart 2 inodestart 32 bmap start 58
+init: starting sh
+nooo
+qemu-system-i386: terminating on signal 15 from pid 96845 (<unknown process>)
